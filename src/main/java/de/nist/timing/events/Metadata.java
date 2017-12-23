@@ -1,27 +1,36 @@
 package de.nist.timing.events;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Metadata {
 
 	private Date date;
-	private String ip;
-	
-	public Metadata(Date date, String ip) {
+	private UUID uuid;
+
+	public Metadata() {
+		this.date = new Date();
+		this.setUuid(UUID.randomUUID());
+	}
+
+	public Metadata(Date date, UUID uuid) {
 		this.date = date;
-		this.ip = ip;
+		this.setUuid(uuid);
 	}
-	
-	public String getIp() {
-		return ip;
-	}
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
+
 	public Date getDate() {
 		return date;
 	}
+
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
 	}
 }

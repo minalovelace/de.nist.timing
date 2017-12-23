@@ -6,13 +6,20 @@ import de.nist.timing.domain.Calendar;
  * This is a base class for every event.
  */
 public abstract class Event {
-	// The Metadata may contain stuff like creation of the event, username or ip, and
-	// other eventually useful stuff.
-	public Metadata getMetadata() {
-		// TODO nina implement
-		return null;
+	private final Metadata metadata;
+
+	public Event(Metadata metadata) {
+		this.metadata = metadata;
 	}
 
-	// Applies the event to the given calendar.
+	/*
+	 * The Metadata may contain things like creation of the event, username or ip,
+	 * and other eventually useful stuff.
+	 */
+	public Metadata getMetadata() {
+		return this.metadata;
+	}
+
+	/* Applies the event to the given calendar. */
 	public abstract Boolean apply(Calendar calendar);
 }

@@ -45,6 +45,10 @@ public final class Calendar {
 		this.entries.put(dayOfYear, entry);
 	}
 
+	public IEntry popEntry(Integer dayOfYear) {
+		return this.entries.remove(dayOfYear);
+	}
+
 	public int getDelta() {
 		return delta;
 	}
