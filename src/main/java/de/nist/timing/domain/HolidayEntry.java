@@ -5,7 +5,7 @@ public class HolidayEntry extends Entry {
     private final String comment;
 
     public HolidayEntry(Integer year, Integer month, Integer day, String comment) {
-        super(year,month,day);
+        super(year, month, day);
         this.comment = comment;
     }
 

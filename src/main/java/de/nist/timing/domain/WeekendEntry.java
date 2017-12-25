@@ -1,9 +1,19 @@
 package de.nist.timing.domain;
 
+import com.google.common.base.Strings;
+
 public class WeekendEntry extends Entry {
+
+    private final String comment;
+
+    public WeekendEntry(Integer year, Integer month, Integer day) {
+        super(year, month, day);
+        this.comment = "";
+    }
 
     public WeekendEntry(Integer year, Integer month, Integer day, String comment) {
         super(year, month, day);
+        this.comment = comment;
     }
 
     @Override
@@ -28,12 +38,12 @@ public class WeekendEntry extends Entry {
 
     @Override
     public Boolean isCommentSet() {
-        return false;
+        return Strings.isNullOrEmpty(this.comment);
     }
 
     @Override
     public String getComment() {
-        return null;
+        return comment;
     }
 
     @Override
