@@ -2,17 +2,16 @@ package de.nist.timing.domain;
 
 import com.google.common.base.Strings;
 
-public class BusinesstripEntry implements IEntry {
-    private final Integer dayOfYear;
+public class BusinesstripEntry extends Entry {
     private final String comment;
 
-    public BusinesstripEntry(Integer dayOfYear) {
-        this.dayOfYear = dayOfYear;
+    public BusinesstripEntry(Integer year, Integer month, Integer day) {
+        super(year, month, day);
         this.comment = "";
     }
 
-    public BusinesstripEntry(Integer dayOfYear, String comment) {
-        this.dayOfYear = dayOfYear;
+    public BusinesstripEntry(Integer year, Integer month, Integer day, String comment) {
+        super(year, month, day);
         this.comment = comment;
     }
 
@@ -42,17 +41,7 @@ public class BusinesstripEntry implements IEntry {
     }
 
     @Override
-    public Integer getDayOfYear() {
-        return this.dayOfYear;
-    }
-
-    @Override
     public Integer getPause() {
-        return null;
-    }
-
-    @Override
-    public Integer getPlannedWorkingTime() {
         return null;
     }
 }

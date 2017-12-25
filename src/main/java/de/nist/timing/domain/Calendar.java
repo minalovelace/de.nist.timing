@@ -8,14 +8,14 @@ import java.util.TreeMap;
  */
 public final class Calendar {
     // Maps from day of year to domain specific date.
-    private TreeMap<Integer, IEntry> entries;
+    private TreeMap<Integer, Entry> entries;
     // The year of the calendar.
     private Integer year;
     // The time in minutes set by the user to transfer minutes of last year to this
     // year.
     private Integer delta;
 
-    public Calendar(TreeMap<Integer, IEntry> entries, Integer year, Integer delta) {
+    public Calendar(TreeMap<Integer, Entry> entries, Integer year, Integer delta) {
         this.putEntries(entries);
         this.setYear(year);
         this.setDelta(delta);
@@ -29,23 +29,23 @@ public final class Calendar {
         this.year = year;
     }
 
-    public TreeMap<Integer, IEntry> getEntries() {
+    public TreeMap<Integer, Entry> getEntries() {
         return entries;
     }
 
-    public void putEntries(TreeMap<Integer, IEntry> entries) {
+    public void putEntries(TreeMap<Integer, Entry> entries) {
         this.entries = entries;
     }
 
-    public TreeMap<Integer, IEntry> getEntry() {
+    public TreeMap<Integer, Entry> getEntry() {
         return entries;
     }
 
-    public void putEntry(Integer dayOfYear, IEntry entry) {
+    public void putEntry(Integer dayOfYear, Entry entry) {
         this.entries.put(dayOfYear, entry);
     }
 
-    public IEntry popEntry(Integer dayOfYear) {
+    public Entry popEntry(Integer dayOfYear) {
         return this.entries.remove(dayOfYear);
     }
 

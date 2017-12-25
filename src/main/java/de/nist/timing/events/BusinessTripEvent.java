@@ -1,51 +1,51 @@
 package de.nist.timing.events;
 
-import com.google.common.base.Strings;
-
 import de.nist.timing.domain.BusinesstripEntry;
 import de.nist.timing.domain.Calendar;
-import de.nist.timing.domain.IEntry;
+import de.nist.timing.domain.Entry;
 
 public class BusinessTripEvent extends Event {
-    private final Integer dayOfYear;
     private final String comment;
+    private final Integer year;
+    private final Integer month;
+    private final Integer day;
 
     /*
      * Use this constructor to create a new BusinessDayEvent with a new comment.
      */
-    public BusinessTripEvent(Integer dayOfYear, String comment) {
+    public BusinessTripEvent(Integer year, Integer month, Integer day, String comment) {
         super(new Metadata());
-        this.dayOfYear = dayOfYear;
+        this.year = year;
+        this.month = month;
+        this.day = day;
         this.comment = comment;
     }
 
     /*
      * Use this constructor to create an instance for a given BusinessDayEvent.
      */
-    public BusinessTripEvent(Metadata metadata, Integer dayOfYear, String comment) {
+    public BusinessTripEvent(Metadata metadata, Integer year, Integer month, Integer day, String comment) {
         super(metadata);
-        this.dayOfYear = dayOfYear;
+        this.year = year;
+        this.month = month;
+        this.day = day;
         this.comment = comment;
     }
 
     @Override
     public Calendar apply(Calendar calendar) {
-        if (!Strings.isNullOrEmpty(this.comment)) {
-            BusinesstripEntry entry = new BusinesstripEntry(this.dayOfYear, this.comment);
-            calendar.putEntry(this.dayOfYear, entry);
-            return calendar;
-        }
+        BusinesstripEntry entry = new BusinesstripEntry(this.year, this.month, this.day, this.comment);
+        Integer dayOfYear = entry.getDayOfYear();
 
-        IEntry previousEntry = calendar.popEntry(this.dayOfYear);
+        Entry previousEntry = calendar.popEntry(dayOfYear);
         if (previousEntry != null && previousEntry.isCommentSet()) {
             String comment = previousEntry.getComment();
-            BusinesstripEntry entry = new BusinesstripEntry(this.dayOfYear, comment);
-            calendar.putEntry(this.dayOfYear, entry);
+            entry = new BusinesstripEntry(this.year, this.month, this.day, comment);
+            calendar.putEntry(dayOfYear, entry);
             return calendar;
         }
 
-        BusinesstripEntry entry = new BusinesstripEntry(this.dayOfYear);
-        calendar.putEntry(this.dayOfYear, entry);
+        calendar.putEntry(dayOfYear, entry);
         return calendar;
     }
 }

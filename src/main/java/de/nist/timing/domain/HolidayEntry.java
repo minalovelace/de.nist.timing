@@ -1,12 +1,11 @@
 package de.nist.timing.domain;
 
-public class HolidayEntry implements IEntry {
+public class HolidayEntry extends Entry {
 
-    private final Integer dayOfYear;
     private final String comment;
 
-    public HolidayEntry(Integer dayOfYear, String comment) {
-        this.dayOfYear = dayOfYear;
+    public HolidayEntry(Integer year, Integer month, Integer day, String comment) {
+        super(year,month,day);
         this.comment = comment;
     }
 
@@ -26,6 +25,11 @@ public class HolidayEntry implements IEntry {
     }
 
     @Override
+    public Integer getPause() {
+        return null;
+    }
+
+    @Override
     public Boolean isCommentSet() {
         return true;
     }
@@ -33,16 +37,6 @@ public class HolidayEntry implements IEntry {
     @Override
     public String getComment() {
         return this.comment;
-    }
-
-    @Override
-    public Integer getDayOfYear() {
-        return this.dayOfYear;
-    }
-
-    @Override
-    public Integer getPause() {
-        return null;
     }
 
     @Override
