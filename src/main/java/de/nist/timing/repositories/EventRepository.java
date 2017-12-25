@@ -1,5 +1,8 @@
 package de.nist.timing.repositories;
 
+import java.util.Collections;
+import java.util.List;
+
 import de.nist.timing.events.Event;
 
 /*
@@ -8,6 +11,10 @@ import de.nist.timing.events.Event;
 public class EventRepository {
 
     public EventRepository() {
+    }
+
+    public List<Event> read() {
+        return Collections.emptyList();
     }
 
     public boolean write(Event event) {
