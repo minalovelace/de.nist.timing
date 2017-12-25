@@ -4,19 +4,19 @@ package de.nist.timing.domain;
  * An entry in the calendar
  */
 public interface IEntry {
-	public EntryType getEntryType();
+    public EntryType getEntryType();
 
-	public Time getBegin();
+    public Time getBegin();
 
-	public Time getEnd();
+    public Time getEnd();
 
-	public Boolean isCommentSet();
+    public Boolean isCommentSet();
 
-	public String getComment();
+    public String getComment();
 
-	public Integer getDayOfYear();
+    public Integer getDayOfYear();
 
-	public Integer getPause();
+    public Integer getPause();
 
-	public Integer getPlannedWorkingTime();
+    public Integer getPlannedWorkingTime();
 }

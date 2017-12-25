@@ -15,14 +15,12 @@ public enum EntryType {
 
     private final String m_enumName;
 
-    private EntryType(String enumName)
-    {
+    private EntryType(String enumName) {
         m_enumName = enumName;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return m_enumName;
     }
 }

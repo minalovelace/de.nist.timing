@@ -7,12 +7,12 @@ import de.nist.timing.events.Event;
  */
 public class CommandHandler {
 
-	public CommandHandler(ICommand command) {
-		// TODO nina save the command in a field.
-	}
+    public CommandHandler(ICommand command) {
+        // TODO nina save the command in a field.
+    }
 
-	public Event createEvent() {
-		// TODO nina create an event based on the command.
-		return null;
-	}
+    public Event createEvent() {
+        // TODO nina create an event based on the command.
+        return null;
+    }
 }

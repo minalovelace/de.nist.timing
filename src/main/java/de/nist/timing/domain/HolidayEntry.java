@@ -1,24 +1,18 @@
 package de.nist.timing.domain;
 
-import com.google.common.base.Strings;
+public class HolidayEntry implements IEntry {
 
-public class BusinesstripEntry implements IEntry {
     private final Integer dayOfYear;
     private final String comment;
 
-    public BusinesstripEntry(Integer dayOfYear) {
-        this.dayOfYear = dayOfYear;
-        this.comment = "";
-    }
-
-    public BusinesstripEntry(Integer dayOfYear, String comment) {
+    public HolidayEntry(Integer dayOfYear, String comment) {
         this.dayOfYear = dayOfYear;
         this.comment = comment;
     }
 
     @Override
     public EntryType getEntryType() {
-        return EntryType.BUSINESSTRIP;
+        return EntryType.HOLIDAY;
     }
 
     @Override
@@ -33,7 +27,7 @@ public class BusinesstripEntry implements IEntry {
 
     @Override
     public Boolean isCommentSet() {
-        return !Strings.isNullOrEmpty(this.comment);
+        return true;
     }
 
     @Override

@@ -7,10 +7,10 @@ import de.nist.timing.events.Event;
  */
 public class EventRepository {
 
-	public EventRepository() {
-	}
+    public EventRepository() {
+    }
 
-	public boolean write(Event event) {
-		return false;
-	}
+    public boolean write(Event event) {
+        return false;
+    }
 }

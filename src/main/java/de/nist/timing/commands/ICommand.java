@@ -9,7 +9,7 @@ import de.nist.timing.events.Metadata;
  */
 public interface ICommand {
 
-	public Map<String, String> getArguments();
+    public Map<String, String> getArguments();
 
-	public Metadata getMetadata();
+    public Metadata getMetadata();
 }
