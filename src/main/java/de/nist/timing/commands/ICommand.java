@@ -13,4 +13,6 @@ public interface ICommand {
     public Event createEvent();
 
     public Metadata getMetadata();
+    
+    public Boolean isSnapshotPossible();
 }

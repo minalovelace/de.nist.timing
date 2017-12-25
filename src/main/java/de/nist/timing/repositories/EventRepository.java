@@ -17,7 +17,7 @@ public class EventRepository {
         return Collections.emptyList();
     }
 
-    public boolean write(Event event) {
+    public Boolean write(Event event) {
         return false;
     }
 }
