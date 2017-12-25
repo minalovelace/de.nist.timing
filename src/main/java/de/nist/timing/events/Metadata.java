@@ -1,5 +1,6 @@
 package de.nist.timing.events;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
@@ -7,30 +8,33 @@ public class Metadata {
 
 	private Date date;
 	private UUID uuid;
+	private String etag;
 
 	public Metadata() {
 		this.date = new Date();
-		this.setUuid(UUID.randomUUID());
+		this.uuid = UUID.randomUUID();
+		this.etag = newEtag();
 	}
 
-	public Metadata(Date date, UUID uuid) {
+	public Metadata(Date date, UUID uuid, String etag) {
 		this.date = date;
-		this.setUuid(uuid);
+		this.uuid = uuid;
+		this.etag = etag;
 	}
 
 	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
 	public UUID getUuid() {
 		return uuid;
 	}
 
-	public void setUuid(UUID uuid) {
-		this.uuid = uuid;
+	public String getEtag() {
+		return etag;
+	}
+
+	private String newEtag() {
+		return "W" + Instant.now().toString() + this.getUuid().toString().hashCode();
 	}
 }

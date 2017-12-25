@@ -1,5 +1,7 @@
 package de.nist.timing.commands;
 
+import java.util.Map;
+
 import de.nist.timing.events.Metadata;
 
 /*
@@ -7,7 +9,7 @@ import de.nist.timing.events.Metadata;
  */
 public interface ICommand {
 
-	public String[] getArguments();
+	public Map<String, String> getArguments();
 
 	public Metadata getMetadata();
 }
