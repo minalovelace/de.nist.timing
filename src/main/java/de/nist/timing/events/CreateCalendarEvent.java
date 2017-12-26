@@ -11,6 +11,7 @@ import static de.nist.timing.domain.FederalStates.SL;
 import static de.nist.timing.domain.FederalStates.SN;
 import static de.nist.timing.domain.FederalStates.ST;
 import static de.nist.timing.domain.FederalStates.TH;
+import static de.nist.timing.events.EventType.CREATE_CALENDAR;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -41,6 +42,15 @@ public class CreateCalendarEvent extends Event {
         /* The calendar should be null, because we are creating a new one now. */
         TreeMap<Integer, Entry> entries = createHolidaysAndWeekends();
         return new Calendar(entries, this.year, this.delta);
+    }
+
+    @Override
+    public void prepareSerialization(EventVisitor visitor) {
+        visitor.setEventType(CREATE_CALENDAR);
+        visitor.setMetadata(getMetadata());
+        visitor.setField("year", this.year.toString());
+        visitor.setField("delta", this.delta.toString());
+        visitor.setField("federalState", this.federalState.toString());
     }
 
     private TreeMap<Integer, Entry> createHolidaysAndWeekends() {
@@ -116,7 +126,7 @@ public class CreateCalendarEvent extends Event {
             bbLocalDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.WEDNESDAY));
             HolidayEntry bb = new HolidayEntry(this.year, bbLocalDate.getMonth().getValue(),
                     bbLocalDate.getDayOfMonth(), "Buß- und Bettag");
-            entries.putIfAbsent(bb.getDayOfYear(), bb);
+            entries.put(bb.getDayOfYear(), bb);
         }
 
         /* Find all weekends */

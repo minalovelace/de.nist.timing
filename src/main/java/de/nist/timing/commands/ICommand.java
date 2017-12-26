@@ -1,6 +1,7 @@
 package de.nist.timing.commands;
 
 import de.nist.timing.events.Event;
+import de.nist.timing.events.EventType;
 import de.nist.timing.events.Metadata;
 
 /*
@@ -8,7 +9,7 @@ import de.nist.timing.events.Metadata;
  */
 public interface ICommand {
 
-    public Commands getCommandName();
+    public EventType getEventType();
 
     public Event createEvent();
 

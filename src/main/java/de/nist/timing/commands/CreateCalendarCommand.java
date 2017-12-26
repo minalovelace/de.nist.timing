@@ -1,8 +1,11 @@
 package de.nist.timing.commands;
 
+import static de.nist.timing.events.EventType.CREATE_CALENDAR;
+
 import de.nist.timing.domain.FederalStates;
 import de.nist.timing.events.CreateCalendarEvent;
 import de.nist.timing.events.Event;
+import de.nist.timing.events.EventType;
 import de.nist.timing.events.Metadata;
 
 public class CreateCalendarCommand implements ICommand {
@@ -25,8 +28,8 @@ public class CreateCalendarCommand implements ICommand {
     }
 
     @Override
-    public Commands getCommandName() {
-        return Commands.CREATE_CALENDAR;
+    public EventType getEventType() {
+        return CREATE_CALENDAR;
     }
 
     @Override

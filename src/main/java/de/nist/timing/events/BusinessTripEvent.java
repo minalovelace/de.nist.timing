@@ -1,5 +1,7 @@
 package de.nist.timing.events;
 
+import static de.nist.timing.events.EventType.BUSINESS_TRIP;
+
 import de.nist.timing.domain.BusinesstripEntry;
 import de.nist.timing.domain.Calendar;
 import de.nist.timing.domain.Entry;
@@ -47,5 +49,15 @@ public class BusinessTripEvent extends Event {
 
         calendar.putEntry(dayOfYear, entry);
         return calendar;
+    }
+
+    @Override
+    public void prepareSerialization(EventVisitor visitor) {
+        visitor.setEventType(BUSINESS_TRIP);
+        visitor.setMetadata(getMetadata());
+        visitor.setField("year", this.year.toString());
+        visitor.setField("month", this.month.toString());
+        visitor.setField("day", this.day.toString());
+        visitor.setField("comment", this.comment.toString());
     }
 }
