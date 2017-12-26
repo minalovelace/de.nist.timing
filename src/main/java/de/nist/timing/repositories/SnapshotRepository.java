@@ -16,9 +16,4 @@ public class SnapshotRepository {
         // TODO nina implement this method
         return false;
     }
-
-    public Boolean createSnapshot(String etag) {
-        // TODO nina implement this method
-        return null;
-    }
 }

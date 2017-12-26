@@ -1,5 +1,20 @@
 package de.nist.timing.events;
 
+import static de.nist.timing.domain.FederalStates.BB;
+import static de.nist.timing.domain.FederalStates.BW;
+import static de.nist.timing.domain.FederalStates.BY;
+import static de.nist.timing.domain.FederalStates.HE;
+import static de.nist.timing.domain.FederalStates.MV;
+import static de.nist.timing.domain.FederalStates.NW;
+import static de.nist.timing.domain.FederalStates.RP;
+import static de.nist.timing.domain.FederalStates.SL;
+import static de.nist.timing.domain.FederalStates.SN;
+import static de.nist.timing.domain.FederalStates.ST;
+import static de.nist.timing.domain.FederalStates.TH;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.GregorianCalendar;
 import java.util.TreeMap;
 
@@ -35,18 +50,34 @@ public class CreateCalendarEvent extends Event {
         /* Neujahr */
         HolidayEntry newYear = new HolidayEntry(this.year, 1, 1, "Neujahr");
         entries.put(newYear.getDayOfYear(), newYear);
-        /* Heilige Drei Könige */
-        HolidayEntry hdk = new HolidayEntry(this.year, 1, 6, "Heilige Drei Könige");
-        entries.put(hdk.getDayOfYear(), hdk);
+        if (this.federalState == BW || this.federalState == BY || this.federalState == ST) {
+            /* Heilige Drei Könige */
+            HolidayEntry hdk = new HolidayEntry(this.year, 1, 6, "Heilige Drei Könige");
+            entries.put(hdk.getDayOfYear(), hdk);
+        }
         /* Tag der Arbeit */
         HolidayEntry tda = new HolidayEntry(this.year, 5, 1, "Tag der Arbeit");
         entries.put(tda.getDayOfYear(), tda);
+        if (this.federalState == SL) {
+            /* Mariä Himmelfahrt */
+            HolidayEntry mh = new HolidayEntry(this.year, 8, 15, "Mariä Himmelfahrt");
+            entries.put(mh.getDayOfYear(), mh);
+        }
         /* Tag der deutschen Einheit */
         HolidayEntry tdde = new HolidayEntry(this.year, 10, 3, "Tag der deutschen Einheit");
         entries.put(tdde.getDayOfYear(), tdde);
-        /* Allerheiligen */
-        HolidayEntry allerheiligen = new HolidayEntry(this.year, 11, 1, "Allerheiligen");
-        entries.put(allerheiligen.getDayOfYear(), allerheiligen);
+        if (this.federalState == BB || this.federalState == MV || this.federalState == SN || this.federalState == ST
+                || this.federalState == TH) {
+            /* Reformationstag */
+            HolidayEntry rt = new HolidayEntry(this.year, 10, 31, "Reformationstag");
+            entries.put(rt.getDayOfYear(), rt);
+        }
+        if (this.federalState == BW || this.federalState == BY || this.federalState == NW || this.federalState == RP
+                || this.federalState == SL) {
+            /* Allerheiligen */
+            HolidayEntry allerheiligen = new HolidayEntry(this.year, 11, 1, "Allerheiligen");
+            entries.put(allerheiligen.getDayOfYear(), allerheiligen);
+        }
         /* 1. Weihnachtstag */
         HolidayEntry firstCD = new HolidayEntry(this.year, 12, 25, "1. Weihnachtstag");
         entries.put(firstCD.getDayOfYear(), firstCD);
@@ -73,9 +104,20 @@ public class CreateCalendarEvent extends Event {
         /* Pfingstmontag */
         pivotDay.add(GregorianCalendar.DAY_OF_YEAR, 1);
         createAndPutEntry(entries, pivotDay, "Pfingstmontag");
-        /* Fronleichnam */
-        pivotDay.add(GregorianCalendar.DAY_OF_YEAR, 10);
-        createAndPutEntry(entries, pivotDay, "Fronleichnam");
+        if (this.federalState == BW || this.federalState == BY || this.federalState == HE || this.federalState == NW
+                || this.federalState == RP || this.federalState == SL) {
+            /* Fronleichnam */
+            pivotDay.add(GregorianCalendar.DAY_OF_YEAR, 10);
+            createAndPutEntry(entries, pivotDay, "Fronleichnam");
+        }
+        if (this.federalState == SN) {
+            /* Buß- u. Bettag */
+            LocalDate bbLocalDate = LocalDate.of(this.year, 11, 22);
+            bbLocalDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.WEDNESDAY));
+            HolidayEntry bb = new HolidayEntry(this.year, bbLocalDate.getMonth().getValue(),
+                    bbLocalDate.getDayOfMonth(), "Buß- und Bettag");
+            entries.putIfAbsent(bb.getDayOfYear(), bb);
+        }
 
         /* Find all weekends */
         GregorianCalendar cal = new GregorianCalendar(this.year, 0, 1);

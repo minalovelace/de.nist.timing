@@ -33,9 +33,4 @@ public class CreateCalendarCommand implements ICommand {
     public Event createEvent() {
         return new CreateCalendarEvent(this.metadata, this.year, this.delta, this.federalState);
     }
-
-    @Override
-    public Boolean isSnapshotPossible() {
-        return true;
-    }
 }
