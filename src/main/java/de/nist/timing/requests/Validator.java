@@ -10,5 +10,4 @@ public class Validator {
     public String validate(Calendar cal) {
         return "The given calendar is inconsistent.";
     }
-
 }

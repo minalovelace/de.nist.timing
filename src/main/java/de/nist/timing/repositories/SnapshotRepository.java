@@ -12,7 +12,7 @@ public class SnapshotRepository {
         return null;
     }
 
-    public Boolean write(Calendar calendar, String eTag) {
+    public Boolean write(Calendar calendar, String etag) {
         // TODO nina implement this method
         return false;
     }

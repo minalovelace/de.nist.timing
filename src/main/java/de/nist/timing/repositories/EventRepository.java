@@ -13,26 +13,42 @@ import java.util.List;
 
 import de.nist.timing.events.Event;
 import de.nist.timing.events.EventVisitor;
+import de.nist.timing.events.Metadata;
 import de.nist.timing.settings.AppSettings;
 
 /*
  * This repository is responsible for saving and reading the events. 
  */
 public class EventRepository {
-    private final Path eventDir = Paths.get(AppSettings.WH_CAL_DATA_FOLDER, AppSettings.EVENT_REPOSITORY)
+    private final Path EVENT_DIR = Paths.get(AppSettings.WH_CAL_DATA_FOLDER, AppSettings.EVENT_REPOSITORY)
             .toAbsolutePath();
     private final String FILE_ENDING = ".txt";
 
     public EventRepository() {
     }
 
+    /*
+     * Return a list, which is sorted by date in an ascending (from old to new)
+     * order. The list contains every user event read from the repository.
+     */
     public List<Event> read() {
+        // TODO nina implement
+        return Collections.emptyList();
+    }
+
+    /*
+     * Return a list, which is sorted by date in an ascending (from old to new)
+     * order. The list contains the metadata to every user event read from the
+     * repository.
+     */
+    public List<Metadata> peek() {
+        // TODO nina implement
         return Collections.emptyList();
     }
 
     public Boolean write(Event event) {
         try {
-            File eventDirFile = this.eventDir.toFile();
+            File eventDirFile = this.EVENT_DIR.toFile();
             if (!eventDirFile.exists())
                 eventDirFile.mkdirs();
 
@@ -44,7 +60,7 @@ public class EventRepository {
             strBuilder.append("\n");
             eventVisitor.getFields().forEach((k, v) -> strBuilder.append(k).append("=").append(v).append("\n"));
 
-            File eventFile = this.eventDir.resolve(eventVisitor.getMetadata().getEtag() + FILE_ENDING).toFile();
+            File eventFile = this.EVENT_DIR.resolve(eventVisitor.getMetadata().getEtag() + FILE_ENDING).toFile();
             eventFile.createNewFile();
             BufferedWriter bw = new BufferedWriter(
                     new OutputStreamWriter(new FileOutputStream(eventFile), StandardCharsets.UTF_8));

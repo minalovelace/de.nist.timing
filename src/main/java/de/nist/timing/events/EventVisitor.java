@@ -15,19 +15,19 @@ public class EventVisitor {
         return this.eventType;
     }
 
-    public void setMetadata(Metadata metadata) {
-        this.metadata = metadata;
-    }
-
-    public Metadata getMetadata() {
-        return this.metadata;
-    }
-
     public void setField(String name, String value) {
         this.fields.put(name, value);
     }
 
     public HashMap<String, String> getFields() {
         return new HashMap<>(this.fields);
+    }
+
+    public void setMetadata(Metadata metadata) {
+        this.metadata = metadata;
+    }
+
+    public Metadata getMetadata() {
+        return this.metadata;
     }
 }
