@@ -11,13 +11,23 @@ public class WorkingDayEntry extends Entry {
     private final String comment;
     private final Integer plannedWorkingTime;
 
-    public WorkingDayEntry(Integer year, Integer month, Integer day, Time begin, Time end, Integer pause) {
+    public WorkingDayEntry(Integer year, Integer month, Integer day, Time begin, Time end, Integer pause,
+            String comment, Integer plannedWorkingTime) {
         super(year, month, day);
         this.begin = begin;
         this.end = end;
         this.pause = pause;
-        this.comment = "";
-        this.plannedWorkingTime = UserSettings.PLANNED_WORKING_TIME;
+        this.comment = comment;
+        this.plannedWorkingTime = plannedWorkingTime;
+    }
+
+    public WorkingDayEntry(Integer year, Integer month, Integer day, Time begin, Time end, Integer pause,
+            String comment) {
+        this(year, month, day, begin, end, pause, comment, UserSettings.PLANNED_WORKING_TIME);
+    }
+
+    public WorkingDayEntry(Integer year, Integer month, Integer day, Time begin, Time end, Integer pause) {
+        this(year, month, day, begin, end, pause, "", UserSettings.PLANNED_WORKING_TIME);
     }
 
     @Override

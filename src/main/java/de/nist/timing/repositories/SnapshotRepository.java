@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class SnapshotRepository {
             if (allLines == null || allLines.size() < 4)
                 return tryCreateSnapshot(etag);
 
-            HashMap<String, String> serializedSnapshot = readSnapshotFileContent(allLines);
+            HashMap<String, String[]> serializedSnapshot = readSnapshotFileContent(allLines);
             return createCalendarFromSnapshot(serializedSnapshot);
 
         } catch (IOException e) {
@@ -69,20 +70,21 @@ public class SnapshotRepository {
         return false;
     }
 
-    private Calendar createCalendarFromSnapshot(HashMap<String, String> serializedSnapshot) {
-        Integer year = Integer.parseInt(serializedSnapshot.get("year"));
-        Integer delta = Integer.parseInt(serializedSnapshot.get("delta"));
+    private Calendar createCalendarFromSnapshot(HashMap<String, String[]> serializedSnapshot) {
+        Integer year = Integer.parseInt(serializedSnapshot.get("year")[0]);
+        Integer delta = Integer.parseInt(serializedSnapshot.get("delta")[0]);
         // TODO nina parse entries and add them to a set. Create the calendar and return
         // it.
         return null;
     }
 
-    private HashMap<String, String> readSnapshotFileContent(List<String> allLines) {
-        HashMap<String, String> serializedSnapshot = new HashMap<>();
+    private HashMap<String, String[]> readSnapshotFileContent(List<String> allLines) {
+        HashMap<String, String[]> serializedSnapshot = new HashMap<>();
         for (String line : allLines) {
-            if (line.contains("=") && line.split("[=]").length > 1) {
-                String key = line.split("[=]")[0];
-                String value = line.split("[=]")[1];
+            String[] split = line.split("[=]");
+            if (line.contains("=") && split.length > 1) {
+                String key = split[0];
+                String[] value = Arrays.copyOfRange(split, 1, split.length);
                 serializedSnapshot.put(key, value);
             }
         }
