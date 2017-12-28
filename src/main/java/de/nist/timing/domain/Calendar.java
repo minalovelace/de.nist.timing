@@ -15,7 +15,7 @@ public final class Calendar {
     // year.
     private Integer delta;
 
-    public Calendar(TreeMap<Integer, Entry> entries, Integer year, Integer delta) {
+    public Calendar(Integer year, Integer delta, TreeMap<Integer, Entry> entries) {
         this.putEntries(entries);
         this.setYear(year);
         this.setDelta(delta);

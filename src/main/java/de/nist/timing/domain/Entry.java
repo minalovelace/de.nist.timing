@@ -2,8 +2,6 @@ package de.nist.timing.domain;
 
 import java.util.GregorianCalendar;
 
-import de.nist.timing.settings.UserSettings;
-
 /*
  * An entry in the calendar
  */
@@ -30,9 +28,7 @@ public abstract class Entry {
 
     public abstract String getComment();
 
-    public Integer getPlannedWorkingTime() {
-        return UserSettings.PLANNED_WORKING_TIME;
-    }
+    public abstract Integer getPlannedWorkingTime();
 
     public Integer getYear() {
         return this.year;

@@ -41,7 +41,7 @@ public class CreateCalendarEvent extends Event {
     public Calendar apply(Calendar calendar) {
         /* The calendar should be null, because we are creating a new one now. */
         TreeMap<Integer, Entry> entries = createHolidaysAndWeekends();
-        return new Calendar(entries, this.year, this.delta);
+        return new Calendar(this.year, this.delta, entries);
     }
 
     @Override

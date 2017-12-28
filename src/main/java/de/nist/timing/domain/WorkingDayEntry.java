@@ -2,6 +2,8 @@ package de.nist.timing.domain;
 
 import com.google.common.base.Strings;
 
+import de.nist.timing.settings.UserSettings;
+
 public class WorkingDayEntry extends Entry {
     private final Time begin;
     private final Time end;
@@ -15,7 +17,7 @@ public class WorkingDayEntry extends Entry {
         this.end = end;
         this.pause = pause;
         this.comment = "";
-        this.plannedWorkingTime = null;
+        this.plannedWorkingTime = UserSettings.PLANNED_WORKING_TIME;
     }
 
     @Override

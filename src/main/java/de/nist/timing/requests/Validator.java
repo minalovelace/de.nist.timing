@@ -7,8 +7,13 @@ import de.nist.timing.domain.Calendar;
  */
 public class Validator {
 
+    /*
+     * At the moment, a calendar is valid if it exists.
+     */
     public Boolean isValid(Calendar cal) {
-        // TODO nina implement method
-        return false;
+        if (cal == null)
+            return false;
+
+        return true;
     }
 }

@@ -8,7 +8,7 @@ public enum EntryType {
     ILLNESS("illness"),
     STAFFTRAINING("staffTraining"),
     VACATION("vacation"),
-    PARTIALVACATION("partialvacation"),
+    PARTIALVACATION("partialVacation"),
     WEEKEND("weekend"),
     WORKINGDAY("workingDay");
     // @formatter:on

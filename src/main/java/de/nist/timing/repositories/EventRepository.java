@@ -37,6 +37,14 @@ public class EventRepository {
     }
 
     /*
+     * Returns a user event specified by the given etag read from the repository.
+     */
+    public Event read(String etag) {
+        // TODO nina implement
+        return null;
+    }
+
+    /*
      * Return a list, which is sorted by date in an ascending (from old to new)
      * order. The list contains the metadata to every user event read from the
      * repository.

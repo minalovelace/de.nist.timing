@@ -44,4 +44,9 @@ public class BusinesstripEntry extends Entry {
     public Integer getPause() {
         return null;
     }
+
+    @Override
+    public Integer getPlannedWorkingTime() {
+        return null;
+    }
 }

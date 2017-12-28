@@ -8,9 +8,7 @@ package de.nist.timing.requests;
  *    -- Get an html representation of the calendar
  */
 public class RequestHandler {
-
     public Response<?> execute(Request request) {
-        // TODO nina validate the corresponding calendar
-        return null;
+        return request.execute();
     }
 }
