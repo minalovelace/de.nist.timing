@@ -9,8 +9,8 @@ package de.nist.timing.requests;
  */
 public class RequestHandler {
 
-    public Boolean isCalendarValid(Request request) {
+    public Response<?> execute(Request request) {
         // TODO nina validate the corresponding calendar
-        return false;
+        return null;
     }
 }

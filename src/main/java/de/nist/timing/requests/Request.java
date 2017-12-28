@@ -2,7 +2,7 @@ package de.nist.timing.requests;
 
 import de.nist.timing.events.Metadata;
 
-public class Request {
+public abstract class Request {
     private final Metadata metadata;
     private final RequestType requestType;
 
@@ -18,4 +18,6 @@ public class Request {
     public RequestType getRequestType() {
         return this.requestType;
     }
+
+    public abstract Response<?> execute();
 }

@@ -7,7 +7,8 @@ import de.nist.timing.domain.Calendar;
  */
 public class Validator {
 
-    public String validate(Calendar cal) {
-        return "The given calendar is inconsistent.";
+    public Boolean isValid(Calendar cal) {
+        // TODO nina implement method
+        return false;
     }
 }
