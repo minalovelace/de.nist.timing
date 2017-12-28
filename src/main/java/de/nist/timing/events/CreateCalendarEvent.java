@@ -17,7 +17,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.GregorianCalendar;
-import java.util.TreeMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import de.nist.timing.domain.Calendar;
 import de.nist.timing.domain.Entry;
@@ -40,7 +41,7 @@ public class CreateCalendarEvent extends Event {
     @Override
     public Calendar apply(Calendar calendar) {
         /* The calendar should be null, because we are creating a new one now. */
-        TreeMap<Integer, Entry> entries = createHolidaysAndWeekends();
+        Set<Entry> entries = createHolidaysAndWeekends();
         return new Calendar(this.year, this.delta, entries);
     }
 
@@ -53,47 +54,46 @@ public class CreateCalendarEvent extends Event {
         visitor.setField("federalState", this.federalState.toString());
     }
 
-    private TreeMap<Integer, Entry> createHolidaysAndWeekends() {
-        TreeMap<Integer, Entry> entries = new TreeMap<Integer, Entry>();
-
+    private Set<Entry> createHolidaysAndWeekends() {
+        Set<Entry> entries = new HashSet<Entry>();
         /* Create and add all fixed holidays: */
         /* Neujahr */
         HolidayEntry newYear = new HolidayEntry(this.year, 1, 1, "Neujahr");
-        entries.put(newYear.getDayOfYear(), newYear);
+        entries.add(newYear);
         if (this.federalState == BW || this.federalState == BY || this.federalState == ST) {
             /* Heilige Drei Könige */
             HolidayEntry hdk = new HolidayEntry(this.year, 1, 6, "Heilige Drei Könige");
-            entries.put(hdk.getDayOfYear(), hdk);
+            entries.add(hdk);
         }
         /* Tag der Arbeit */
         HolidayEntry tda = new HolidayEntry(this.year, 5, 1, "Tag der Arbeit");
-        entries.put(tda.getDayOfYear(), tda);
+        entries.add(tda);
         if (this.federalState == SL) {
             /* Mariä Himmelfahrt */
             HolidayEntry mh = new HolidayEntry(this.year, 8, 15, "Mariä Himmelfahrt");
-            entries.put(mh.getDayOfYear(), mh);
+            entries.add(mh);
         }
         /* Tag der deutschen Einheit */
         HolidayEntry tdde = new HolidayEntry(this.year, 10, 3, "Tag der deutschen Einheit");
-        entries.put(tdde.getDayOfYear(), tdde);
+        entries.add(tdde);
         if (this.federalState == BB || this.federalState == MV || this.federalState == SN || this.federalState == ST
                 || this.federalState == TH) {
             /* Reformationstag */
             HolidayEntry rt = new HolidayEntry(this.year, 10, 31, "Reformationstag");
-            entries.put(rt.getDayOfYear(), rt);
+            entries.add(rt);
         }
         if (this.federalState == BW || this.federalState == BY || this.federalState == NW || this.federalState == RP
                 || this.federalState == SL) {
             /* Allerheiligen */
             HolidayEntry allerheiligen = new HolidayEntry(this.year, 11, 1, "Allerheiligen");
-            entries.put(allerheiligen.getDayOfYear(), allerheiligen);
+            entries.add(allerheiligen);
         }
         /* 1. Weihnachtstag */
         HolidayEntry firstCD = new HolidayEntry(this.year, 12, 25, "1. Weihnachtstag");
-        entries.put(firstCD.getDayOfYear(), firstCD);
+        entries.add(firstCD);
         /* 2. Weihnachtstag */
         HolidayEntry secondCD = new HolidayEntry(this.year, 12, 26, "2. Weihnachtstag");
-        entries.put(secondCD.getDayOfYear(), secondCD);
+        entries.add(secondCD);
 
         /* Create and add all flexible holidays: */
         /* Ostersonntag */
@@ -126,7 +126,7 @@ public class CreateCalendarEvent extends Event {
             bbLocalDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.WEDNESDAY));
             HolidayEntry bb = new HolidayEntry(this.year, bbLocalDate.getMonth().getValue(),
                     bbLocalDate.getDayOfMonth(), "Buß- und Bettag");
-            entries.put(bb.getDayOfYear(), bb);
+            entries.add(bb);
         }
 
         /* Find all weekends */
@@ -143,7 +143,7 @@ public class CreateCalendarEvent extends Event {
             case GregorianCalendar.SUNDAY:
                 WeekendEntry weekend = new WeekendEntry(this.year, cal.get(GregorianCalendar.MONTH) + 1,
                         cal.get(GregorianCalendar.DAY_OF_MONTH));
-                entries.putIfAbsent(cal.get(GregorianCalendar.DAY_OF_YEAR), weekend);
+                entries.add(weekend);
                 break;
             }
             cal.add(GregorianCalendar.DAY_OF_YEAR, 1);
@@ -155,16 +155,16 @@ public class CreateCalendarEvent extends Event {
         return entries;
     }
 
-    private void createAndPutEntry(TreeMap<Integer, Entry> entries, GregorianCalendar cal, String comment) {
+    private void createAndPutEntry(Set<Entry> entries, GregorianCalendar cal, String comment) {
         HolidayEntry entry = new HolidayEntry(this.year, cal.get(GregorianCalendar.MONTH) + 1,
                 cal.get(GregorianCalendar.DAY_OF_MONTH), comment);
-        entries.put(cal.get(GregorianCalendar.DAY_OF_YEAR), entry);
+        entries.add(entry);
     }
 
-    private void specialHolidays(TreeMap<Integer, Entry> entries) {
+    private void specialHolidays(Set<Entry> entries) {
         if (this.year == 2017) {
             HolidayEntry luther = new HolidayEntry(this.year, 9, 31, "500. Reformationstag");
-            entries.put(luther.getDayOfYear(), luther);
+            entries.add(luther);
         }
     }
 
