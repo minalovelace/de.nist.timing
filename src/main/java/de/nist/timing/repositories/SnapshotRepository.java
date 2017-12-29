@@ -8,11 +8,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.base.Strings;
 
 import de.nist.timing.domain.Calendar;
+import de.nist.timing.domain.Entry;
 import de.nist.timing.settings.AppSettings;
 
 /*
@@ -71,10 +74,27 @@ public class SnapshotRepository {
     }
 
     private Calendar createCalendarFromSnapshot(HashMap<String, String[]> serializedSnapshot) {
-        Integer year = Integer.parseInt(serializedSnapshot.get("year")[0]);
-        Integer delta = Integer.parseInt(serializedSnapshot.get("delta")[0]);
-        // TODO nina parse entries and add them to a set. Create the calendar and return
-        // it.
+        Integer year = null;
+        Integer delta = null;
+        Set<Entry> entries = new HashSet<>();
+
+        for (String key : serializedSnapshot.keySet()) {
+            if ("delta".equals(key)) {
+                delta = Integer.parseInt(serializedSnapshot.get("delta")[0]);
+                break;
+            }
+            if ("year".equals(key)) {
+                year = Integer.parseInt(serializedSnapshot.get("year")[0]);
+                break;
+            }
+            entries.add(readEntryFromString(serializedSnapshot.get(key)));
+        }
+
+        return new Calendar(year, delta, entries);
+    }
+
+    private Entry readEntryFromString(String[] strings) {
+        // TODO nina implement
         return null;
     }
 

@@ -31,4 +31,13 @@ public enum FederalStates {
     public String toString() {
         return m_name;
     }
+
+    public static FederalStates fromString(String enumName) {
+        for (FederalStates federalState : FederalStates.values()) {
+            if (federalState.toString().equalsIgnoreCase(enumName)) {
+                return federalState;
+            }
+        }
+        return null;
+    }
 }

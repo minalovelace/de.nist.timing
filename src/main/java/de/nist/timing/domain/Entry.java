@@ -9,11 +9,13 @@ public abstract class Entry {
     private Integer year;
     private Integer month;
     private Integer day;
+    private final GregorianCalendar gregorianCalendar;
 
     public Entry(Integer year, Integer month, Integer day) {
         this.year = year;
         this.month = month;
         this.day = day;
+        this.gregorianCalendar = new GregorianCalendar(this.year, this.month - 1, this.day);
     }
 
     public abstract EntryType getEntryType();
@@ -43,11 +45,10 @@ public abstract class Entry {
     }
 
     public Integer getDayOfYear() {
-        return new GregorianCalendar(this.year, this.month - 1, this.day).get(GregorianCalendar.DAY_OF_YEAR);
+        return this.gregorianCalendar.get(GregorianCalendar.DAY_OF_YEAR);
     }
 
     public Integer getWeekOfYear() {
-        GregorianCalendar datumAsCalendar = new GregorianCalendar(this.year, this.month - 1, this.day);
-        return datumAsCalendar.get(GregorianCalendar.WEEK_OF_YEAR);
+        return this.gregorianCalendar.get(GregorianCalendar.WEEK_OF_YEAR);
     }
 }
