@@ -84,7 +84,7 @@ public class EventRepository {
             for (int i = 1; i < allLines.size(); i++) {
                 String[] split = allLines.get(i).split(INFORMATION_SEPARATOR);
                 if (split.length != 2)
-                    break;
+                    continue;
 
                 String key = split[0];
                 String value = split[1];
@@ -109,7 +109,7 @@ public class EventRepository {
         for (File file : eventFiles) {
             String name = file.getName();
             if (Strings.isNullOrEmpty(name) || !name.endsWith(FILE_ENDING) || name.length() < FILE_ENDING.length() + 1)
-                break;
+                continue;
 
             String etag = name.substring(0, name.length() - FILE_ENDING.length());
             try {

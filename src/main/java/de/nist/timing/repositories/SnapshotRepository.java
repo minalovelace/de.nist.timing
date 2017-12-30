@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,6 +22,8 @@ import de.nist.timing.domain.Calendar;
 import de.nist.timing.domain.Entries;
 import de.nist.timing.domain.Entry;
 import de.nist.timing.domain.EntryType;
+import de.nist.timing.events.Event;
+import de.nist.timing.events.Metadata;
 import de.nist.timing.settings.AppSettings;
 
 /*
@@ -63,7 +66,7 @@ public class SnapshotRepository {
             return createCalendarFromSnapshot(serializedSnapshot);
 
         } catch (IOException e) {
-            this.faultedReason.put(etag, "An IOException occurred in the Snapshot Repository.");
+            this.faultedReason.put(etag, "An IOException occurred in the Snapshot Repository:" + e.getMessage());
             return null;
         }
     }
@@ -85,11 +88,11 @@ public class SnapshotRepository {
         for (String key : serializedSnapshot.keySet()) {
             if ("delta".equals(key)) {
                 delta = Integer.parseInt(serializedSnapshot.get("delta")[0]);
-                break;
+                continue;
             }
             if ("year".equals(key)) {
                 year = Integer.parseInt(serializedSnapshot.get("year")[0]);
-                break;
+                continue;
             }
             entries.add(readEntryFromString(serializedSnapshot.get(key)));
         }
@@ -113,7 +116,7 @@ public class SnapshotRepository {
         HashMap<String, String[]> serializedSnapshot = new HashMap<>();
         for (String line : allLines) {
             if (Strings.isNullOrEmpty(line))
-                break;
+                continue;
 
             String[] split = line.split(INFORMATION_SEPARATOR);
             if (split.length > 1) {
@@ -126,7 +129,33 @@ public class SnapshotRepository {
     }
 
     private Calendar tryCreateSnapshot(String etag) {
-        // TODO nina implement this method
+        /*
+         * Improvement: Get the snapshot before the requested one and apply the needed
+         * events.
+         */
+        try {
+            Metadata pivotMetadata = new Metadata(etag);
+            EventRepository eventRepository = new EventRepository();
+            List<Metadata> metadataList = eventRepository.peek();
+            if (!metadataList.contains(pivotMetadata))
+                return null;
+
+            Calendar result = null;
+
+            for (Metadata metadata : metadataList) {
+                Event event = eventRepository.read(etag);
+                if (etag.equals(metadata.getEtag())) {
+                    result = event.apply(result);
+                    break;
+                }
+
+                result = event.apply(result);
+            }
+            return result;
+        } catch (ParseException e) {
+            // TODO nina log and handle exception(s)
+            e.printStackTrace();
+        }
         return null;
     }
 
