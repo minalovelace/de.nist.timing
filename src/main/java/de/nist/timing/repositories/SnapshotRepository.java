@@ -112,8 +112,11 @@ public class SnapshotRepository {
     private HashMap<String, String[]> readSnapshotFileContent(List<String> allLines) {
         HashMap<String, String[]> serializedSnapshot = new HashMap<>();
         for (String line : allLines) {
+            if (Strings.isNullOrEmpty(line))
+                break;
+
             String[] split = line.split(INFORMATION_SEPARATOR);
-            if (line.contains(INFORMATION_SEPARATOR) && split.length > 1) {
+            if (split.length > 1) {
                 String key = split[0];
                 String[] value = Arrays.copyOfRange(split, 1, split.length);
                 serializedSnapshot.put(key, value);

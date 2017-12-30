@@ -24,4 +24,17 @@ public class Time {
     public Integer getMinutes() {
         return minutes;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.hours).append(":");
+
+        if (this.minutes < 10)
+            sb.append("0");
+
+        sb.append(this.minutes).append(" Uhr");
+
+        return sb.toString();
+    }
 }

@@ -3,16 +3,18 @@ package de.nist.timing.repositories;
 import static de.nist.timing.settings.RepositorySettings.FILE_ENDING;
 import static de.nist.timing.settings.RepositorySettings.INFORMATION_SEPARATOR;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.google.common.base.Strings;
+import com.google.common.io.Files;
 
 import de.nist.timing.events.Event;
 import de.nist.timing.events.EventVisitor;
@@ -52,8 +54,23 @@ public class EventRepository {
      * repository.
      */
     public List<Metadata> peek() {
-        // TODO nina implement
-        return Collections.emptyList();
+        File[] eventFiles = this.EVENT_DIR.toFile().listFiles();
+        List<Metadata> result = new ArrayList<>();
+
+        for (File file : eventFiles) {
+            String name = file.getName();
+            if (Strings.isNullOrEmpty(name) || !name.endsWith(FILE_ENDING) || name.length() < FILE_ENDING.length() + 1)
+                break;
+
+            String etag = name.substring(0, name.length() - FILE_ENDING.length());
+            try {
+                Metadata metadata = new Metadata(etag);
+                result.add(metadata);
+            } catch (IllegalArgumentException | ParseException e) {
+                // TODO nina log and handle exception(s)
+            }
+        }
+        return result;
     }
 
     public Boolean write(Event event) {
@@ -73,11 +90,8 @@ public class EventRepository {
 
             File eventFile = this.EVENT_DIR.resolve(eventVisitor.getMetadata().getEtag() + FILE_ENDING).toFile();
             eventFile.createNewFile();
-            BufferedWriter bw = new BufferedWriter(
-                    new OutputStreamWriter(new FileOutputStream(eventFile), StandardCharsets.UTF_8));
-
-            bw.write(strBuilder.toString());
-            bw.close();
+            Files.write(strBuilder.toString().getBytes(StandardCharsets.UTF_8), eventFile);
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
