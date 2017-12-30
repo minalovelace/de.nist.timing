@@ -5,6 +5,6 @@ public enum RequestType {
     VALIDATE,
     GET_PDF,
     GET_HTML,
-    GET_SETTINGS
+    GET_SETTINGS;
     // @formatter:on
 }

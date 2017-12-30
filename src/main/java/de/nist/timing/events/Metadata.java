@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import com.google.common.base.Strings;
 
-public class Metadata {
+public class Metadata implements Comparable<Metadata> {
     private final DateFormat formatter = new SimpleDateFormat("YYYY_MM_dd-HH_mm_ss");
     private Date date;
     private UUID uuid;
@@ -53,5 +53,10 @@ public class Metadata {
 
     private String newEtag() {
         return "E" + this.formatter.format(this.date) + "W" + getUuid().toString();
+    }
+
+    @Override
+    public int compareTo(Metadata other) {
+        return this.getDate().compareTo(other.getDate());
     }
 }

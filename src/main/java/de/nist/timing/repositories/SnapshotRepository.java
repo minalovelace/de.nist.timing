@@ -64,8 +64,8 @@ public class SnapshotRepository {
 
         } catch (IOException e) {
             this.faultedReason.put(etag, "An IOException occurred in the Snapshot Repository.");
+            return null;
         }
-        return null;
     }
 
     public Boolean isFaulted(String etag) {

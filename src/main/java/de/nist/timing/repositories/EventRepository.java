@@ -6,18 +6,22 @@ import static de.nist.timing.settings.RepositorySettings.INFORMATION_SEPARATOR;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.common.base.Strings;
-import com.google.common.io.Files;
 
 import de.nist.timing.events.Event;
+import de.nist.timing.events.EventType;
 import de.nist.timing.events.EventVisitor;
+import de.nist.timing.events.Events;
 import de.nist.timing.events.Metadata;
 import de.nist.timing.settings.AppSettings;
 
@@ -36,16 +40,61 @@ public class EventRepository {
      * order. The list contains every user event read from the repository.
      */
     public List<Event> read() {
-        // TODO nina implement
-        return Collections.emptyList();
+        List<Metadata> metadataList = peek();
+        List<Event> result = new ArrayList<>();
+
+        for (Metadata metadata : metadataList) {
+            Event event = read(metadata.getEtag());
+            result.add(event);
+        }
+        return result;
     }
 
     /*
-     * Returns a user event specified by the given etag read from the repository.
+     * Read event from disk and create the corresponding event. Return the created
+     * event as a result of this function. If the creation of the event fails, null
+     * will be returned.
      */
     public Event read(String etag) {
-        // TODO nina implement
-        return null;
+        try {
+            File eventDirFile = this.EVENT_DIR.toFile();
+
+            if (!eventDirFile.exists())
+                return null;
+
+            File[] listFiles = eventDirFile.listFiles((dir, name) -> {
+                String lowercaseName = name.toLowerCase();
+                if (Strings.isNullOrEmpty(lowercaseName))
+                    return false;
+
+                return lowercaseName.contains(etag) && lowercaseName.endsWith(FILE_ENDING);
+            });
+
+            if (listFiles == null || listFiles.length != 1)
+                return null;
+
+            List<String> allLines = Files.readAllLines(listFiles[0].toPath(), StandardCharsets.UTF_8);
+            if (allLines == null || allLines.size() < 2)
+                return null;
+
+            Metadata metadata = new Metadata(etag);
+            EventType eventType = EventType.fromString(allLines.get(0));
+            HashMap<String, String> fields = new HashMap<>(allLines.size() - 1);
+
+            for (int i = 1; i < allLines.size(); i++) {
+                String[] split = allLines.get(i).split(INFORMATION_SEPARATOR);
+                if (split.length != 2)
+                    break;
+
+                String key = split[0];
+                String value = split[1];
+                fields.put(key, value);
+            }
+            return Events.create(eventType, metadata, fields);
+        } catch (IOException | ParseException e) {
+            // TODO nina log and handle exception
+            return null;
+        }
     }
 
     /*
@@ -70,6 +119,8 @@ public class EventRepository {
                 // TODO nina log and handle exception(s)
             }
         }
+
+        Collections.sort(result);
         return result;
     }
 
@@ -90,7 +141,8 @@ public class EventRepository {
 
             File eventFile = this.EVENT_DIR.resolve(eventVisitor.getMetadata().getEtag() + FILE_ENDING).toFile();
             eventFile.createNewFile();
-            Files.write(strBuilder.toString().getBytes(StandardCharsets.UTF_8), eventFile);
+            Files.write(eventFile.toPath(), strBuilder.toString().getBytes(StandardCharsets.UTF_8),
+                    StandardOpenOption.CREATE);
             return true;
         } catch (IOException e) {
             e.printStackTrace();

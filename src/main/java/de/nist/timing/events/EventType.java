@@ -2,19 +2,28 @@ package de.nist.timing.events;
 
 public enum EventType {
     // @formatter:off
-    BUSINESS_TRIP,
+    BUSINESSTRIP,
     CHANGE_SETTINGS,
     CLOCK_IN,
     CLOCK_OUT,
     COMMENT,
     CREATE_CALENDAR,
     DELETE_DAY,
-    HOUR_REDUCTION,
+    HOURREDUCTION,
     ILLNESS,
-    PARTIAL_VACATION,
+    PARTIALVACATION,
     SIGMA_DELTA_LAST_YEAR,
-    STAFF_TRAINING,
+    STAFFTRAINING,
     VACATION,
-    WORKING_DAY
+    WORKINGDAY;
     // @formatter:on
+
+    public static EventType fromString(String enumName) {
+        for (EventType eventType : EventType.values()) {
+            if (eventType.toString().equalsIgnoreCase(enumName)) {
+                return eventType;
+            }
+        }
+        return null;
+    }
 }
