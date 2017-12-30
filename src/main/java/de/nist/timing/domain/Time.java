@@ -5,25 +5,23 @@ package de.nist.timing.domain;
  */
 public class Time {
 
-    private Integer hours;
-    private Integer minutes;
+    private final Integer hours;
+    private final Integer minutes;
 
-    public Time() {
+    public Time(Integer hours, Integer minutes) {
+        this.hours = hours;
+        this.minutes = minutes;
+    }
+
+    public Time(String hours, String minutes) {
+        this(Integer.decode(hours), Integer.decode(minutes));
     }
 
     public Integer getHours() {
         return hours;
     }
 
-    public void setHours(Integer hours) {
-        this.hours = hours;
-    }
-
     public Integer getMinutes() {
         return minutes;
-    }
-
-    public void setMinutes(Integer minutes) {
-        this.minutes = minutes;
     }
 }

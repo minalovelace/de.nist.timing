@@ -1,5 +1,8 @@
 package de.nist.timing.repositories;
 
+import static de.nist.timing.settings.RepositorySettings.FILE_ENDING;
+import static de.nist.timing.settings.RepositorySettings.INFORMATION_SEPARATOR;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,7 +25,6 @@ import de.nist.timing.settings.AppSettings;
 public class EventRepository {
     private final Path EVENT_DIR = Paths.get(AppSettings.WH_CAL_DATA_FOLDER, AppSettings.EVENT_REPOSITORY)
             .toAbsolutePath();
-    private final String FILE_ENDING = ".txt";
 
     public EventRepository() {
     }
@@ -66,7 +68,8 @@ public class EventRepository {
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.append(eventVisitor.getEventType().toString());
             strBuilder.append("\n");
-            eventVisitor.getFields().forEach((k, v) -> strBuilder.append(k).append("=").append(v).append("\n"));
+            eventVisitor.getFields()
+                    .forEach((k, v) -> strBuilder.append(k).append(INFORMATION_SEPARATOR).append(v).append("\n"));
 
             File eventFile = this.EVENT_DIR.resolve(eventVisitor.getMetadata().getEtag() + FILE_ENDING).toFile();
             eventFile.createNewFile();

@@ -1,5 +1,8 @@
 package de.nist.timing.repositories;
 
+import static de.nist.timing.settings.RepositorySettings.FILE_ENDING;
+import static de.nist.timing.settings.RepositorySettings.INFORMATION_SEPARATOR;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +18,9 @@ import java.util.Set;
 import com.google.common.base.Strings;
 
 import de.nist.timing.domain.Calendar;
+import de.nist.timing.domain.Entries;
 import de.nist.timing.domain.Entry;
+import de.nist.timing.domain.EntryType;
 import de.nist.timing.settings.AppSettings;
 
 /*
@@ -24,7 +29,6 @@ import de.nist.timing.settings.AppSettings;
 public class SnapshotRepository {
     private final Path SNAPSHOT_DIR = Paths.get(AppSettings.WH_CAL_DATA_FOLDER, AppSettings.SNAPSHOT_REPOSITORY)
             .toAbsolutePath();
-    private final String FILE_ENDING = ".txt";
 
     private HashMap<String, String> faultedReason = new HashMap<>();
 
@@ -94,15 +98,22 @@ public class SnapshotRepository {
     }
 
     private Entry readEntryFromString(String[] strings) {
-        // TODO nina implement
-        return null;
+        if (strings == null || strings.length < 4)
+            return null;
+
+        EntryType entryType = EntryType.fromString(strings[0]);
+        Integer year = Integer.decode(strings[1]);
+        Integer month = Integer.decode(strings[2]);
+        Integer day = Integer.decode(strings[3]);
+
+        return Entries.create(entryType, year, month, day, Arrays.copyOfRange(strings, 4, strings.length));
     }
 
     private HashMap<String, String[]> readSnapshotFileContent(List<String> allLines) {
         HashMap<String, String[]> serializedSnapshot = new HashMap<>();
         for (String line : allLines) {
-            String[] split = line.split("[=]");
-            if (line.contains("=") && split.length > 1) {
+            String[] split = line.split(INFORMATION_SEPARATOR);
+            if (line.contains(INFORMATION_SEPARATOR) && split.length > 1) {
                 String key = split[0];
                 String[] value = Arrays.copyOfRange(split, 1, split.length);
                 serializedSnapshot.put(key, value);
