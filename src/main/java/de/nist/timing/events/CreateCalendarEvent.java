@@ -169,7 +169,7 @@ public class CreateCalendarEvent extends Event {
 
     private void specialHolidays(Set<Entry> entries) {
         if (this.year == 2017) {
-            HolidayEntry luther = new HolidayEntry(this.year, 9, 31, "500. Reformationstag");
+            HolidayEntry luther = new HolidayEntry(this.year, 10, 31, "500. Reformationstag");
             entries.add(luther);
         }
     }

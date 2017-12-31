@@ -39,7 +39,7 @@ public final class Calendar {
     }
 
     public Entry getEntry(Integer dayOfYear) {
-        Optional<Entry> findAnyEntry = this.entries.stream().filter(entry -> entry.getDayOfYear() == dayOfYear)
+        Optional<Entry> findAnyEntry = this.entries.stream().filter(entry -> entry.getDayOfYear().intValue() == dayOfYear.intValue())
                 .findFirst();
         if (!findAnyEntry.isPresent())
             return null;
