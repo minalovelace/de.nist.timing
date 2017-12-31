@@ -41,7 +41,9 @@ public class CreateCalendarEvent extends Event {
     @Override
     public Calendar apply(Calendar calendar) {
         /* The calendar should be null, because we are creating a new one now. */
-        Set<Entry> entries = createHolidaysAndWeekends();
+        Set<Entry> entries = createHolidays();
+        Set<Entry> weekends = createWeekends();
+        entries.addAll(weekends);
         return new Calendar(this.year, this.delta, entries);
     }
 
@@ -54,7 +56,31 @@ public class CreateCalendarEvent extends Event {
         visitor.setField("federalState", this.federalState.toString());
     }
 
-    private Set<Entry> createHolidaysAndWeekends() {
+    private Set<Entry> createWeekends() {
+        Set<Entry> entries = new HashSet<Entry>();
+        /* Find all weekends */
+        GregorianCalendar cal = new GregorianCalendar(this.year, 0, 1);
+        /*
+         * The while loop ensures that we are only checking dates in the specified year.
+         */
+        while (cal.get(GregorianCalendar.YEAR) == this.year) {
+            /*
+             * The switch checks the day of the week for Saturdays and Sundays
+             */
+            switch (cal.get(GregorianCalendar.DAY_OF_WEEK)) {
+            case GregorianCalendar.SATURDAY:
+            case GregorianCalendar.SUNDAY:
+                WeekendEntry weekend = new WeekendEntry(this.year, cal.get(GregorianCalendar.MONTH) + 1,
+                        cal.get(GregorianCalendar.DAY_OF_MONTH));
+                entries.add(weekend);
+                break;
+            }
+            cal.add(GregorianCalendar.DAY_OF_YEAR, 1);
+        }
+        return entries;
+    }
+
+    private Set<Entry> createHolidays() {
         Set<Entry> entries = new HashSet<Entry>();
         /* Create and add all fixed holidays: */
         /* Neujahr */
@@ -127,26 +153,6 @@ public class CreateCalendarEvent extends Event {
             HolidayEntry bb = new HolidayEntry(this.year, bbLocalDate.getMonth().getValue(),
                     bbLocalDate.getDayOfMonth(), "Buß- und Bettag");
             entries.add(bb);
-        }
-
-        /* Find all weekends */
-        GregorianCalendar cal = new GregorianCalendar(this.year, 0, 1);
-        /*
-         * The while loop ensures that we are only checking dates in the specified year.
-         */
-        while (cal.get(GregorianCalendar.YEAR) == this.year) {
-            /*
-             * The switch checks the day of the week for Saturdays and Sundays
-             */
-            switch (cal.get(GregorianCalendar.DAY_OF_WEEK)) {
-            case GregorianCalendar.SATURDAY:
-            case GregorianCalendar.SUNDAY:
-                WeekendEntry weekend = new WeekendEntry(this.year, cal.get(GregorianCalendar.MONTH) + 1,
-                        cal.get(GregorianCalendar.DAY_OF_MONTH));
-                entries.add(weekend);
-                break;
-            }
-            cal.add(GregorianCalendar.DAY_OF_YEAR, 1);
         }
 
         /* Calculate special holidays of the specified year. */

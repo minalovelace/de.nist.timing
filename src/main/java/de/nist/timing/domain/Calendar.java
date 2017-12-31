@@ -40,7 +40,7 @@ public final class Calendar {
 
     public Entry getEntry(Integer dayOfYear) {
         Optional<Entry> findAnyEntry = this.entries.stream().filter(entry -> entry.getDayOfYear() == dayOfYear)
-                .findAny();
+                .findFirst();
         if (!findAnyEntry.isPresent())
             return null;
 

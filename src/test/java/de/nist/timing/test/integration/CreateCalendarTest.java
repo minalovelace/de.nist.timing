@@ -34,7 +34,8 @@ public class CreateCalendarTest {
         assertEquals(0, calendar.getDelta());
         LocalDate neujahr = LocalDate.of(2017, 1, 1);
         Entry actualNeujahr = calendar.getEntry(neujahr.getDayOfYear());
-        assertTrue(actualNeujahr instanceof HolidayEntry);
+        assertTrue(actualNeujahr instanceof HolidayEntry,
+                "'actualNeujahr' was of type: '" + actualNeujahr.getClass().getName() + "'.");
         Assertions.assertEquals("Neujahr", actualNeujahr.getComment());
     }
 }

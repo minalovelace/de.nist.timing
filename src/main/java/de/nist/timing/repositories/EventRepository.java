@@ -63,11 +63,10 @@ public class EventRepository {
                 return null;
 
             File[] listFiles = eventDirFile.listFiles((dir, name) -> {
-                String lowercaseName = name.toLowerCase();
-                if (Strings.isNullOrEmpty(lowercaseName))
+                if (Strings.isNullOrEmpty(name))
                     return false;
 
-                return lowercaseName.contains(etag) && lowercaseName.endsWith(FILE_ENDING);
+                return name.contains(etag) && name.endsWith(FILE_ENDING);
             });
 
             if (listFiles == null || listFiles.length != 1)

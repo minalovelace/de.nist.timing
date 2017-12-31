@@ -27,7 +27,7 @@ public class Events {
         case COMMENT:
             throw new UnsupportedOperationException("Not yet implemented.");
         case CREATE_CALENDAR: {
-            if (fields == null || fields.size() < 4)
+            if (fields == null || fields.size() < 3)
                 throw new IllegalArgumentException(
                         "Cannot create a new CreateCalendarEvent if the necessary information is not provided.");
 

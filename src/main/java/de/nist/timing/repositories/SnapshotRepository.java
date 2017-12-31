@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -133,30 +133,23 @@ public class SnapshotRepository {
          * Improvement: Get the snapshot before the requested one and apply the needed
          * events.
          */
-        try {
-            Metadata pivotMetadata = new Metadata(etag);
-            EventRepository eventRepository = new EventRepository();
-            List<Metadata> metadataList = eventRepository.peek();
-            if (!metadataList.contains(pivotMetadata))
-                return null;
+        EventRepository eventRepository = new EventRepository();
+        List<Metadata> metadataList = eventRepository.peek();
+        List<String> etagList = new ArrayList<>(metadataList.size());
+        metadataList.forEach(m -> etagList.add(m.getEtag()));
+        if (!etagList.contains(etag))
+            return null;
 
-            Calendar result = null;
+        Calendar result = null;
 
-            for (Metadata metadata : metadataList) {
-                Event event = eventRepository.read(etag);
-                if (etag.equals(metadata.getEtag())) {
-                    result = event.apply(result);
-                    break;
-                }
+        for (String etagInList : etagList) {
+            Event event = eventRepository.read(etag);
+            result = event.apply(result);
 
-                result = event.apply(result);
-            }
-            return result;
-        } catch (ParseException e) {
-            // TODO nina log and handle exception(s)
-            e.printStackTrace();
+            if (etag.equals(etagInList))
+                break;
         }
-        return null;
+        return result;
     }
 
     public String getFaultedReason(String etag) {
