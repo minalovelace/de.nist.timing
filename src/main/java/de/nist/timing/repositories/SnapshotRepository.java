@@ -44,11 +44,10 @@ public class SnapshotRepository {
                 return tryCreateSnapshot(etag);
 
             File[] listFiles = snapshotDirFile.listFiles((dir, name) -> {
-                String lowercaseName = name.toLowerCase();
-                if (Strings.isNullOrEmpty(lowercaseName))
+                if (Strings.isNullOrEmpty(name))
                     return false;
 
-                return lowercaseName.contains(etag) && lowercaseName.endsWith(FILE_ENDING);
+                return name.contains(etag) && name.endsWith(FILE_ENDING);
             });
 
             if (listFiles == null || listFiles.length != 1)
@@ -149,6 +148,11 @@ public class SnapshotRepository {
             if (etag.equals(etagInList))
                 break;
         }
+
+        // Improvement: Run the write operation on a thread in the background.
+        if (result != null)
+            write(result, etag);
+
         return result;
     }
 

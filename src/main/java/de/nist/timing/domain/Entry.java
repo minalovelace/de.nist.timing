@@ -72,10 +72,13 @@ public abstract class Entry implements Comparable<Entry> {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
+
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+
+        if (this.getClass() != obj.getClass())
             return false;
+
         Entry other = (Entry) obj;
         Integer otherDayOfYear = other.getDayOfYear();
         Integer thisDayOfYear = this.getDayOfYear();
@@ -84,6 +87,7 @@ public abstract class Entry implements Comparable<Entry> {
                 return false;
         } else if (!thisDayOfYear.equals(otherDayOfYear))
             return false;
+
         return true;
     }
 }
