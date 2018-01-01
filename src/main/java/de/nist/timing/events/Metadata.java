@@ -9,7 +9,7 @@ import java.util.UUID;
 import com.google.common.base.Strings;
 
 public class Metadata implements Comparable<Metadata> {
-    private final DateFormat formatter = new SimpleDateFormat("YYYY_MM_dd-HH_mm_ss");
+    private final DateFormat formatter = new SimpleDateFormat("YYYY_MM_dd-HH_mm_ss_SSSSSSSS");
     private Date date;
     private UUID uuid;
     private String etag;

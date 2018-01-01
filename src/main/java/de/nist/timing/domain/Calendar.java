@@ -22,7 +22,7 @@ public final class Calendar {
         this.setDelta(delta);
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return this.year;
     }
 
@@ -58,7 +58,7 @@ public final class Calendar {
         return entry;
     }
 
-    public int getDelta() {
+    public Integer getDelta() {
         return this.delta;
     }
 

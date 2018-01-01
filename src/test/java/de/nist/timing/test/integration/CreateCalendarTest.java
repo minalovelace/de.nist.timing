@@ -63,44 +63,7 @@ public class CreateCalendarTest {
     public void create_calendar_for_bw_2017() {
         Metadata metadata = new Metadata();
         String etag = metadata.getEtag();
-        CreateCalendarCommand command = new CreateCalendarCommand(metadata, 2017, 0, BW);
-        CommandHandler commandHandler = new CommandHandler(command);
-        Boolean execute = commandHandler.execute();
-        assertTrue(execute);
-        SnapshotRepository snapshotRepository = new SnapshotRepository();
-        Calendar calendar = snapshotRepository.read(etag);
-        assertNotNull(calendar);
-        assertEquals(2017, calendar.getYear());
-        assertEquals(0, calendar.getDelta());
-
-        checkHoliday(calendar, LocalDate.of(2017, 1, 1), "Neujahr");
-        checkHoliday(calendar, LocalDate.of(2017, 1, 6), "Heilige Drei Könige");
-        checkHoliday(calendar, LocalDate.of(2017, 4, 14), "Karfreitag");
-        checkHoliday(calendar, LocalDate.of(2017, 4, 17), "Ostermontag");
-        checkHoliday(calendar, LocalDate.of(2017, 5, 1), "Tag der Arbeit");
-        checkHoliday(calendar, LocalDate.of(2017, 5, 25), "Christi Himmelfahrt");
-        checkHoliday(calendar, LocalDate.of(2017, 6, 5), "Pfingstmontag");
-        checkHoliday(calendar, LocalDate.of(2017, 6, 15), "Fronleichnam");
-        // "Mariä Himmelfahrt" must not exist
-        LocalDate mh = LocalDate.of(2017, 8, 15);
-        Entry mhEntry = calendar.getEntry(mh.getDayOfYear());
-        assertNull(mhEntry);
-        checkHoliday(calendar, LocalDate.of(2017, 10, 3), "Tag der deutschen Einheit");
-        checkHoliday(calendar, LocalDate.of(2017, 10, 31), "500. Reformationstag");
-        checkHoliday(calendar, LocalDate.of(2017, 11, 1), "Allerheiligen");
-        // "Buß- und Bettag" must not exist
-        LocalDate bb = LocalDate.of(2017, 11, 22);
-        Entry bbEntry = calendar.getEntry(bb.getDayOfYear());
-        assertNull(bbEntry);
-        checkHoliday(calendar, LocalDate.of(2017, 12, 25), "1. Weihnachtstag");
-        checkHoliday(calendar, LocalDate.of(2017, 12, 26), "2. Weihnachtstag");
-    }
-
-    @Test
-    public void create_calendar_for_bw_2018() {
-        Metadata metadata = new Metadata();
-        String etag = metadata.getEtag();
-        int expectedYear = 2018;
+        Integer expectedYear = 2017;
         CreateCalendarCommand command = new CreateCalendarCommand(metadata, expectedYear, 0, BW);
         CommandHandler commandHandler = new CommandHandler(command);
         Boolean execute = commandHandler.execute();
@@ -108,8 +71,46 @@ public class CreateCalendarTest {
         SnapshotRepository snapshotRepository = new SnapshotRepository();
         Calendar calendar = snapshotRepository.read(etag);
         assertNotNull(calendar);
-        assertEquals(expectedYear, calendar.getYear());
-        assertEquals(0, calendar.getDelta());
+        assertEquals(expectedYear.intValue(), calendar.getYear().intValue());
+        assertEquals(0, calendar.getDelta().intValue());
+
+        checkHoliday(calendar, LocalDate.of(expectedYear, 1, 1), "Neujahr");
+        checkHoliday(calendar, LocalDate.of(expectedYear, 1, 6), "Heilige Drei Könige");
+        checkHoliday(calendar, LocalDate.of(expectedYear, 4, 14), "Karfreitag");
+        checkHoliday(calendar, LocalDate.of(expectedYear, 4, 17), "Ostermontag");
+        checkHoliday(calendar, LocalDate.of(expectedYear, 5, 1), "Tag der Arbeit");
+        checkHoliday(calendar, LocalDate.of(expectedYear, 5, 25), "Christi Himmelfahrt");
+        checkHoliday(calendar, LocalDate.of(expectedYear, 6, 5), "Pfingstmontag");
+        checkHoliday(calendar, LocalDate.of(expectedYear, 6, 15), "Fronleichnam");
+        // "Mariä Himmelfahrt" must not exist
+        LocalDate mh = LocalDate.of(expectedYear, 8, 15);
+        Entry mhEntry = calendar.getEntry(mh.getDayOfYear());
+        assertNull(mhEntry);
+        checkHoliday(calendar, LocalDate.of(expectedYear, 10, 3), "Tag der deutschen Einheit");
+        checkHoliday(calendar, LocalDate.of(expectedYear, 10, 31), "500. Reformationstag");
+        checkHoliday(calendar, LocalDate.of(expectedYear, 11, 1), "Allerheiligen");
+        // "Buß- und Bettag" must not exist
+        LocalDate bb = LocalDate.of(expectedYear, 11, 22);
+        Entry bbEntry = calendar.getEntry(bb.getDayOfYear());
+        assertNull(bbEntry);
+        checkHoliday(calendar, LocalDate.of(expectedYear, 12, 25), "1. Weihnachtstag");
+        checkHoliday(calendar, LocalDate.of(expectedYear, 12, 26), "2. Weihnachtstag");
+    }
+
+    @Test
+    public void create_calendar_for_bw_2018() {
+        Metadata metadata = new Metadata();
+        String etag = metadata.getEtag();
+        Integer expectedYear = 2018;
+        CreateCalendarCommand command = new CreateCalendarCommand(metadata, expectedYear, 0, BW);
+        CommandHandler commandHandler = new CommandHandler(command);
+        Boolean execute = commandHandler.execute();
+        assertTrue(execute);
+        SnapshotRepository snapshotRepository = new SnapshotRepository();
+        Calendar calendar = snapshotRepository.read(etag);
+        assertNotNull(calendar);
+        assertEquals(expectedYear.intValue(), calendar.getYear().intValue());
+        assertEquals(0, calendar.getDelta().intValue());
 
         checkHoliday(calendar, LocalDate.of(expectedYear, 1, 1), "Neujahr");
         checkHoliday(calendar, LocalDate.of(expectedYear, 1, 6), "Heilige Drei Könige");
@@ -142,7 +143,7 @@ public class CreateCalendarTest {
         Metadata metadata = new Metadata();
         String etag = metadata.getEtag();
         Integer expectedDelta = 180;
-        int expectedYear = 2019;
+        Integer expectedYear = 2019;
         CreateCalendarCommand command = new CreateCalendarCommand(metadata, expectedYear, expectedDelta, BW);
         CommandHandler commandHandler = new CommandHandler(command);
         Boolean execute = commandHandler.execute();
@@ -150,8 +151,8 @@ public class CreateCalendarTest {
         SnapshotRepository snapshotRepository = new SnapshotRepository();
         Calendar calendar = snapshotRepository.read(etag);
         assertNotNull(calendar);
-        assertEquals(expectedYear, calendar.getYear());
-        assertEquals(expectedDelta.intValue(), calendar.getDelta());
+        assertEquals(expectedYear.intValue(), calendar.getYear().intValue());
+        assertEquals(expectedDelta.intValue(), calendar.getDelta().intValue());
 
         checkHoliday(calendar, LocalDate.of(expectedYear, 1, 1), "Neujahr");
         checkHoliday(calendar, LocalDate.of(expectedYear, 1, 6), "Heilige Drei Könige");

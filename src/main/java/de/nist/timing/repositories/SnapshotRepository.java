@@ -142,7 +142,7 @@ public class SnapshotRepository {
         Calendar result = null;
 
         for (String etagInList : etagList) {
-            Event event = eventRepository.read(etag);
+            Event event = eventRepository.read(etagInList);
             result = event.apply(result);
 
             if (etag.equals(etagInList))

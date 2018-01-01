@@ -5,6 +5,9 @@ import de.nist.timing.repositories.EventRepository;
 
 /*
  * This class receives commands and creates corresponding events based on the given command.
+ * Improvement: Think abaout making the CommandHandler a singleton. Let the CommandHandler
+ * create the commands, because two commands at the same time (i.e. where the difference
+ * is less than a millisecond) will lead to an error.
  */
 public class CommandHandler {
 
