@@ -1,5 +1,7 @@
 package de.nist.timing.domain;
 
+import com.google.common.base.Strings;
+
 public class HolidayEntry extends Entry {
 
     private final String comment;
@@ -31,7 +33,7 @@ public class HolidayEntry extends Entry {
 
     @Override
     public Boolean isCommentSet() {
-        return true;
+        return !Strings.isNullOrEmpty(this.comment);
     }
 
     @Override

@@ -76,7 +76,39 @@ public class BusinesstripCalendarTest {
         assertEquals(expectedYear, calendar.getYear());
         assertEquals(0, calendar.getDelta().intValue());
 
-        Entry actualBusinesstrip = calendar.getEntry(LocalDate.of(expectedYear, 2, 7).getDayOfYear());
+        Entry actualBusinesstrip = calendar.getEntry(LocalDate.of(expectedYear, expectedMonth, expectedDay).getDayOfYear());
+        assertNotNull(actualBusinesstrip, "'Businesstrip' was <null>");
+        assertTrue(actualBusinesstrip instanceof BusinesstripEntry,
+                "'Businesstrip' was of type: '" + actualBusinesstrip.getClass().getName() + "'.");
+        Assertions.assertEquals(expectedComment, actualBusinesstrip.getComment());
+    }
+
+    @Test
+    public void businesstrip_weekend_calendar_for_bw_2018() {
+        Metadata metadataCreateCalendar = new Metadata();
+        Integer expectedYear = 2018;
+        Integer expectedMonth = 3;
+        Integer expectedDay = 11;
+        String expectedComment = "An important reason at a sunday!";
+
+        CreateCalendarCommand createCalendarCommand = new CreateCalendarCommand(metadataCreateCalendar, expectedYear, 0,
+                BW);
+        CommandHandler createCalendarCommandHandler = new CommandHandler(createCalendarCommand);
+        assertTrue(createCalendarCommandHandler.execute());
+        Metadata metadataBusinesstrip = new Metadata();
+        String etagBusinesstrip = metadataBusinesstrip.getEtag();
+        BusinesstripCommand businesstripCommand = new BusinesstripCommand(metadataBusinesstrip, expectedYear,
+                expectedMonth, expectedDay, expectedComment);
+        CommandHandler businesstripCommandHandler = new CommandHandler(businesstripCommand);
+        assertTrue(businesstripCommandHandler.execute());
+
+        SnapshotRepository snapshotRepository = new SnapshotRepository();
+        Calendar calendar = snapshotRepository.read(etagBusinesstrip);
+        assertNotNull(calendar);
+        assertEquals(expectedYear, calendar.getYear());
+        assertEquals(0, calendar.getDelta().intValue());
+
+        Entry actualBusinesstrip = calendar.getEntry(LocalDate.of(expectedYear, expectedMonth, expectedDay).getDayOfYear());
         assertNotNull(actualBusinesstrip, "'Businesstrip' was <null>");
         assertTrue(actualBusinesstrip instanceof BusinesstripEntry,
                 "'Businesstrip' was of type: '" + actualBusinesstrip.getClass().getName() + "'.");

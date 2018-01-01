@@ -38,7 +38,7 @@ public class WeekendEntry extends Entry {
 
     @Override
     public Boolean isCommentSet() {
-        return Strings.isNullOrEmpty(this.comment);
+        return !Strings.isNullOrEmpty(this.comment);
     }
 
     @Override
