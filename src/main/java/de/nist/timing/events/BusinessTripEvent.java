@@ -2,6 +2,8 @@ package de.nist.timing.events;
 
 import static de.nist.timing.events.EventType.BUSINESSTRIP;
 
+import com.google.common.base.Strings;
+
 import de.nist.timing.domain.BusinesstripEntry;
 import de.nist.timing.domain.Calendar;
 import de.nist.timing.domain.Entry;
@@ -40,7 +42,7 @@ public class BusinessTripEvent extends Event {
         Integer dayOfYear = entry.getDayOfYear();
 
         Entry previousEntry = calendar.popEntry(dayOfYear);
-        if (previousEntry != null && previousEntry.isCommentSet()) {
+        if (Strings.isNullOrEmpty(this.comment) && previousEntry != null && previousEntry.isCommentSet()) {
             String comment = previousEntry.getComment();
             entry = new BusinesstripEntry(this.year, this.month, this.day, comment);
             calendar.putEntry(dayOfYear, entry);
