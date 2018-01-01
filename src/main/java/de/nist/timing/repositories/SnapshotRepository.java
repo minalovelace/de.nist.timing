@@ -149,7 +149,7 @@ public class SnapshotRepository {
                 break;
         }
 
-        // Improvement: Run the write operation on a thread in the background.
+        // Improvement: Run the write operation on a worker thread in the background.
         if (result != null)
             write(result, etag);
 
