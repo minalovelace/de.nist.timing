@@ -22,7 +22,7 @@ public abstract class Event {
 
     /* Applies the event to the given calendar. */
     public abstract Calendar apply(Calendar calendar);
-    
+
     /* Gives the visitor every needed information to serialize the event. */
     public abstract void prepareSerialization(EventVisitor visitor);
 }
