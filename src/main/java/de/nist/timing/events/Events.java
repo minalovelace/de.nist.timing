@@ -24,8 +24,17 @@ public class Events {
             throw new UnsupportedOperationException("Not yet implemented.");
         case CLOCK_OUT:
             throw new UnsupportedOperationException("Not yet implemented.");
-        case COMMENT:
-            throw new UnsupportedOperationException("Not yet implemented.");
+        case COMMENT: {
+            if (fields == null || fields.size() < 4)
+                throw new IllegalArgumentException(
+                        "Cannot create a new CommentEvent if the necessary information is not provided.");
+
+            Integer year = Integer.decode(fields.get("year"));
+            Integer month = Integer.decode(fields.get("month"));
+            Integer day = Integer.decode(fields.get("day"));
+            String comment = fields.get("comment");
+            return new CommentEvent(metadata, year, month, day, comment);
+        }
         case CREATE_CALENDAR: {
             if (fields == null || fields.size() < 3)
                 throw new IllegalArgumentException(

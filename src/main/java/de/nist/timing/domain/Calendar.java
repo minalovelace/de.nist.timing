@@ -39,8 +39,8 @@ public final class Calendar {
     }
 
     public Entry getEntry(Integer dayOfYear) {
-        Optional<Entry> findAnyEntry = this.entries.stream().filter(entry -> entry.getDayOfYear().intValue() == dayOfYear.intValue())
-                .findFirst();
+        Optional<Entry> findAnyEntry = this.entries.stream()
+                .filter(entry -> entry.getDayOfYear().intValue() == dayOfYear.intValue()).findFirst();
         if (!findAnyEntry.isPresent())
             return null;
 
@@ -54,7 +54,9 @@ public final class Calendar {
 
     public Entry popEntry(Integer dayOfYear) {
         Entry entry = getEntry(dayOfYear);
-        this.entries.remove(entry);
+        if (entry != null)
+            this.entries.remove(entry);
+
         return entry;
     }
 
