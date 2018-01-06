@@ -8,7 +8,7 @@ import de.nist.timing.events.Event;
 import de.nist.timing.events.EventType;
 import de.nist.timing.events.Metadata;
 
-public class CreateCalendarCommand implements ICommand {
+public class CreateCalendarCommand extends AbsCommand {
 
     private final Metadata metadata;
     private final Integer year;

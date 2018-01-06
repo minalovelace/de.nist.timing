@@ -4,7 +4,7 @@ import de.nist.timing.events.Event;
 import de.nist.timing.events.EventType;
 import de.nist.timing.events.Metadata;
 
-public class CommentCommand implements ICommand {
+public class CommentCommand extends AbsCommand {
 
     public CommentCommand(Metadata metadataComment, Integer expectedYear, Integer expectedMonth, Integer expectedDay,
             String expectedComment) {

@@ -7,7 +7,7 @@ import de.nist.timing.events.Event;
 import de.nist.timing.events.EventType;
 import de.nist.timing.events.Metadata;
 
-public class BusinesstripCommand implements ICommand {
+public class BusinesstripCommand extends AbsCommand {
 
     private final Metadata metadata;
     private final Integer year;
