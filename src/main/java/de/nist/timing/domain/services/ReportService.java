@@ -6,9 +6,4 @@ public interface ReportService {
 
 	Duration balance();
 
-	// TODO Use DI
-	static ReportService Create() {
-		return new ReportServiceImpl();
-	}
-
 }
